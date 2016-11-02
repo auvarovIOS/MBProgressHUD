@@ -102,6 +102,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated;
 
++ (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated withIcon: (UIImage*) image;
+
+
 /// @name Showing and hiding
 
 /**
