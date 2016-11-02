@@ -66,6 +66,20 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
     return hud;
 }
 
++ (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated withIcon: (UIImage*) image{
+    MBProgressHUD * indicator = [MBProgressHUD showHUDAddedTo:view animated:animated];
+    indicator.mode = MBProgressHUDModeCustomView;
+    UIImageView * imageView = [[UIImageView alloc] initWithImage:image];
+    indicator.customView = imageView;
+    CABasicAnimation *rotateAnimation = [CABasicAnimation animationWithKeyPath: @"transform.rotation"];
+    rotateAnimation.fromValue = 0;
+    rotateAnimation.toValue = [NSNumber numberWithDouble:M_PI * 2.0];
+    rotateAnimation.duration = 2;
+    rotateAnimation.repeatCount = INFINITY;
+    [indicator.customView.layer addAnimation:rotateAnimation forKey:nil];
+    return indicator;
+}
+
 + (BOOL)hideHUDForView:(UIView *)view animated:(BOOL)animated {
     MBProgressHUD *hud = [self HUDForView:view];
     if (hud != nil) {
@@ -1104,7 +1118,7 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 #pragma mark - Lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    if ((self = [super initWithFrame:frame])) {
+    if ((self = [super initWithFrame:frame])) {/*
         if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_7_0) {
             _style = MBProgressHUDBackgroundStyleBlur;
             if (kCFCoreFoundationVersionNumber >= kCFCoreFoundationVersionNumber_iOS_8_0) {
@@ -1119,7 +1133,7 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 
         self.clipsToBounds = YES;
 
-        [self updateForBackgroundStyle];
+        [self updateForBackgroundStyle];*/
     }
     return self;
 }
