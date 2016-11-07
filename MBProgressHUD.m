@@ -67,6 +67,23 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 }
 
 + (instancetype)showHUDAddedTo:(UIView *)view animated:(BOOL)animated withIcon: (UIImage*) image{
+    //Blur
+    UIView * blurView = [[UIView alloc] initWithFrame:view.frame];
+    blurView.restorationIdentifier = @"BlurView";
+    [view addSubview:blurView];
+    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+        blurView.backgroundColor = [UIColor clearColor];
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = blurView.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [blurView addSubview:blurEffectView];
+    } else {
+        blurView.backgroundColor = [UIColor whiteColor];
+    }
+    
     MBProgressHUD * indicator = [MBProgressHUD showHUDAddedTo:view animated:animated];
     indicator.mode = MBProgressHUDModeCustomView;
     UIImageView * imageView = [[UIImageView alloc] initWithImage:image];
@@ -81,6 +98,11 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
 }
 
 + (BOOL)hideHUDForView:(UIView *)view animated:(BOOL)animated {
+    for (UIView *subview in view.subviews) {
+        if (subview.restorationIdentifier == @"BlurView"){
+            [subview removeFromSuperview];
+        }
+    }
     MBProgressHUD *hud = [self HUDForView:view];
     if (hud != nil) {
         hud.removeFromSuperViewOnHide = YES;
